@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <!-- ✅ CSS LINK -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- 🔹 HEADER -->
+    <div class="header">
+        <h1>Attendance Dashboard</h1>
+        <div id="live-clock"></div>
+    </div>
+
+    <!-- 🔹 ADD STUDENT -->
+    <div class="glass-panel">
+        <h3>Add Student</h3>
+
+        <form method="POST" class="form-row">
+            <input type="hidden" name="add_student_trigger" value="1">
+
+            <input type="text" name="new_student_name" placeholder="Student Name" required>
+
+            <select name="new_student_dept">
+                <option value="CSE">CSE</option>
+                <option value="ECE">ECE</option>
+                <option value="MECH">MECH</option>
+                <option value="IT">IT</option>
+            </select>
+
+            <select name="new_student_year">
+                <option value="1">Year 1</option>
+                <option value="2">Year 2</option>
+                <option value="3">Year 3</option>
+                <option value="4">Year 4</option>
+            </select>
+
+            <button type="submit">Add</button>
+        </form>
+    </div>
+
+    <!-- 🔹 STUDENT TABLES -->
+    {% for year_label, students in year_groups.items()|sort %}
+
+    <h2 class="year-title">{{ year_label }}</h2>
+
+    <div class="glass-panel">
+
+        <form method="POST">
+            <input type="hidden" name="bulk_attendance_trigger" value="1">
+
+            <!-- SUBJECT -->
+            <div style="margin-bottom: 15px;">
+                <label>Select Subject:</label>
+                <select name="subject_id" required>
+                    {% for sub in subjects %}
+                    <option value="{{ sub[0] }}">{{ sub[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- TABLE -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Dept</th>
+                        <th>Year</th>
+                        <th>Attendance</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for s in students %}
+                    <tr>
+
+                        <!-- NAME -->
+                        <td>
+                            <strong>{{ s[1] }}</strong>
+                            <input type="hidden" name="student_ids" value="{{ s[0] }}">
+                        </td>
+
+                        <!-- DEPT -->
+                        <td>{{ s[2] }}</td>
+
+                        <!-- YEAR -->
+                        <td>{{ s[3] }}</td>
+
+                        <!-- ✅ SMALL PERCENT -->
+                        <td>
+                            <span class="percent small">
+                                {{ s[4]|int }}%
+                            </span>
+                        </td>
+
+                        <!-- STATUS -->
+                        <td>
+                            <div class="radio-group">
+                                <label class="radio-present">
+                                    <input type="radio" name="status_{{ s[0] }}" value="Present" checked>
+                                    Present
+                                </label>
+
+                                <label class="radio-absent">
+                                    <input type="radio" name="status_{{ s[0] }}" value="Absent">
+                                    Absent
+                                </label>
+                            </div>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- SUBMIT -->
+            <div style="text-align:right; margin-top:20px;">
+                <button type="submit">Submit {{ year_label }}</button>
+            </div>
+
+        </form>
+
+    </div>
+
+    {% endfor %}
+
+    <!-- 🔹 LOGOUT -->
+    <div style="text-align:center; margin-top:30px;">
+        <a href="/logout">
+            <button>Logout</button>
+        </a>
+    </div>
+
+</div>
+
+<!-- 🕒 LIVE CLOCK -->
+<script>
+function updateClock() {
+    const now = new Date();
+    document.getElementById("live-clock").innerText =
+        now.toLocaleDateString() + " | " + now.toLocaleTimeString();
+}
+setInterval(updateClock, 1000);
+updateClock();
+</script>
+
+</body>
+</html>

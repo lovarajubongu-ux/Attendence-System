@@ -1,0 +1,156 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* COLORS */
+:root {
+    --neon: #00f2ff;
+    --bg-dark: #0f0f1a;
+    --bg-light: #1a1a2e;
+    --glass: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.1);
+    --present: #00ff88;
+    --absent: #ff4444;
+}
+
+/* BODY */
+body {
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at center, var(--bg-light), var(--bg-dark));
+    color: white;
+}
+
+/* WRAPPER */
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    height: 100vh;
+}
+
+/* LOGIN BOX */
+.login-box {
+    width: 300px;
+    padding: 30px;
+    border-radius: 20px;
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+    text-align: center;
+}
+
+/* TEXT */
+h1, h2, h3 {
+    color: var(--neon);
+    margin-bottom: 15px;
+}
+
+/* INPUT */
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.4);
+    color: white;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 12px;
+    background: var(--neon);
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* CONTAINER */
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+    padding-top: 20px;
+}
+
+/* GLASS PANEL */
+.glass-panel {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    color: var(--neon);
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+}
+
+/* RADIO */
+.radio-group {
+    display: flex;
+    gap: 15px;
+}
+
+.radio-present {
+    color: var(--present);
+}
+
+.radio-absent {
+    color: var(--absent);
+}
+
+/* YEAR */
+.year-title {
+    margin: 20px 0;
+}
+
+/* CARD */
+.card {
+    padding: 40px;
+    border-radius: 20px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    text-align: center;
+}
+
+/* PERCENT */
+.percent {
+    font-size: 40px;
+    color: var(--present);
+}
+
+.percent.small {
+    font-size: 14px;
+}
+
+/* NOTE */
+.note {
+    font-size: 12px;
+    color: #aaa;
+}

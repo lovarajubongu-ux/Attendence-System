@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="wrapper">
+    <div class="card">
+
+        <!-- ✅ STUDENT NAME + SMALL % -->
+        <h2>
+            {{ data[0] }} 
+            <span class="percent small">
+                ({{ "%.2f"|format(data[1]) }}%)
+            </span>
+        </h2>
+
+        <h3>Your Attendance</h3>
+
+        <!-- ✅ SMALL PERCENTAGE DISPLAY -->
+        <div class="percent small">
+            {{ "%.2f"|format(data[1]) }} %
+        </div>
+
+        <br><br>
+
+        <a href="/logout">
+            <button>Logout</button>
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>
