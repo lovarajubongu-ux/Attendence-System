@@ -45,7 +45,22 @@
             <button type="submit">Add</button>
         </form>
     </div>
+<!-- ✅ NEW: ADD SUBJECT PANEL -->
+        <div class="glass-panel" style="margin-bottom: 0;">
+            <h3>Add Subject</h3>
+            <form method="POST" class="form-row">
+                <!-- This hidden input matches your Python 'if' statement -->
+                <input type="hidden" name="add_subject_trigger" value="1">
+                
+                <input type="text" name="new_subject_name" placeholder="New Subject Name (e.g. Python)" required>
+                
+                <button type="submit" style="background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);">
+                    Add Subject
+                </button>
+            </form>
+        </div>
 
+    </div>
     <!-- 🔹 STUDENT TABLES -->
     {% for year_label, students in year_groups.items()|sort %}
 
