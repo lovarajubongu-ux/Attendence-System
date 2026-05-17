@@ -3,75 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-
-    <!-- ✅ CSS LINK -->
+    <title>Attendance Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 <body>
 
 <div class="container">
 
-    <!-- 🔹 HEADER -->
     <div class="header">
         <h1>Attendance Dashboard</h1>
         <div id="live-clock"></div>
     </div>
 
-    <!-- 🔹 ADD STUDENT -->
-    <div class="glass-panel">
-        <h3>Add Student</h3>
-
-        <form method="POST" class="form-row">
-            <input type="hidden" name="add_student_trigger" value="1">
-
-            <input type="text" name="new_student_name" placeholder="Student Name" required>
-
-            <select name="new_student_dept">
-                <option value="CSE">CSE</option>
-                <option value="ECE">ECE</option>
-                <option value="MECH">MECH</option>
-                <option value="IT">IT</option>
-            </select>
-
-            <select name="new_student_year">
-                <option value="1">Year 1</option>
-                <option value="2">Year 2</option>
-                <option value="3">Year 3</option>
-                <option value="4">Year 4</option>
-            </select>
-
-            <button type="submit">Add</button>
-        </form>
-    </div>
-<!-- ✅ NEW: ADD SUBJECT PANEL -->
+    <div class="grid-3">
+        
         <div class="glass-panel" style="margin-bottom: 0;">
             <h3>Add Subject</h3>
             <form method="POST" class="form-row">
-                <!-- This hidden input matches your Python 'if' statement -->
                 <input type="hidden" name="add_subject_trigger" value="1">
-                
-                <input type="text" name="new_subject_name" placeholder="New Subject Name (e.g. Python)" required>
-                
-                <button type="submit" style="background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);">
-                    Add Subject
-                </button>
+                <input type="text" name="new_subject_name" placeholder="Subject Name" required>
+                <button type="submit">Add Subject</button>
             </form>
         </div>
 
-    </div>
-    <!-- 🔹 STUDENT TABLES -->
-    {% for year_label, students in year_groups.items()|sort %}
+        <div class="glass-panel" style="margin-bottom: 0;">
+            <h3>Add Department</h3>
+            <form method="POST" class="form-row">
+                <input type="hidden" name="add_dept_trigger" value="1">
+                <input type="text" name="new_dept_name" placeholder="e.g. CIVIL, EEE" required>
+                <button type="submit">Add Dept</button>
+            </form>
+        </div>
 
-    <h2 class="year-title">{{ year_label }}</h2>
+        <div class="glass-panel" style="margin-bottom: 0;">
+            <h3>Add Academic Year</h3>
+            <form method="POST" class="form-row">
+                <input type="hidden" name="add_year_trigger" value="1">
+                <input type="number" name="new_year_num" placeholder="e.g. 5" min="1" max="10" required>
+                <button type="submit">Add Year</button>
+            </form>
+        </div>
+        
+    </div>
 
     <div class="glass-panel">
+        <h3>Add Student</h3>
+        <form method="POST" class="form-row">
+            <input type="hidden" name="add_student_trigger" value="1">
+            
+            <input type="text" name="new_student_name" placeholder="Student Name" required>
+            
+            <select name="new_student_dept">
+                {% for dept in departments %}
+                <option value="{{ dept }}">{{ dept }}</option>
+                {% endfor %}
+            </select>
 
+            <select name="new_student_year">
+                {% for yr in years %}
+                <option value="{{ yr }}">Year {{ yr }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    {% for year_label, students in year_groups.items()|sort %}
+    <h2 class="year-title">{{ year_label }}</h2>
+    <div class="glass-panel">
         <form method="POST">
             <input type="hidden" name="bulk_attendance_trigger" value="1">
 
-            <!-- SUBJECT -->
             <div style="margin-bottom: 15px;">
                 <label>Select Subject:</label>
                 <select name="subject_id" required>
@@ -81,7 +84,6 @@
                 </select>
             </div>
 
-            <!-- TABLE -->
             <table>
                 <thead>
                     <tr>
@@ -92,76 +94,50 @@
                         <th>Status</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     {% for s in students %}
                     <tr>
-
-                        <!-- NAME -->
                         <td>
                             <strong>{{ s[1] }}</strong>
                             <input type="hidden" name="student_ids" value="{{ s[0] }}">
                         </td>
-
-                        <!-- DEPT -->
                         <td>{{ s[2] }}</td>
-
-                        <!-- YEAR -->
                         <td>{{ s[3] }}</td>
-
-                        <!-- ✅ SMALL PERCENT -->
-                        <td>
-                            <span class="percent small">
-                                {{ s[4]|int }}%
-                            </span>
-                        </td>
-
-                        <!-- STATUS -->
+                        <td><span class="percent small">{{ s[4]|int }}%</span></td>
                         <td>
                             <div class="radio-group">
                                 <label class="radio-present">
-                                    <input type="radio" name="status_{{ s[0] }}" value="Present" checked>
-                                    Present
+                                    <input type="radio" name="status_{{ s[0] }}" value="Present" checked> P
                                 </label>
-
                                 <label class="radio-absent">
-                                    <input type="radio" name="status_{{ s[0] }}" value="Absent">
-                                    Absent
+                                    <input type="radio" name="status_{{ s[0] }}" value="Absent"> A
                                 </label>
                             </div>
                         </td>
-
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
 
-            <!-- SUBMIT -->
             <div style="text-align:right; margin-top:20px;">
                 <button type="submit">Submit {{ year_label }}</button>
             </div>
-
         </form>
-
     </div>
-
     {% endfor %}
 
-    <!-- 🔹 LOGOUT -->
     <div style="text-align:center; margin-top:30px;">
         <a href="/logout">
-            <button>Logout</button>
+            <button class="logout-button">Logout</button>
         </a>
     </div>
 
 </div>
 
-<!-- 🕒 LIVE CLOCK -->
 <script>
 function updateClock() {
     const now = new Date();
-    document.getElementById("live-clock").innerText =
-        now.toLocaleDateString() + " | " + now.toLocaleTimeString();
+    document.getElementById("live-clock").innerText = now.toLocaleDateString() + " | " + now.toLocaleTimeString();
 }
 setInterval(updateClock, 1000);
 updateClock();
